@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Cake Delivery</title>
+    <style>
+        
+        :root {
+            --primary: #8a3535;
+            --primary-light: #bc6c6c;
+            --secondary: #f8e4d9;
+            --dark: #2c2c2c;
+            --light: #ffffff;
+            --gray: #f5f5f5;
+            --success: #4caf50;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', 'Segoe UI', sans-serif;
+        }
+        
+        body {
+            background-color: var(--gray);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: var(--light);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo span {
+            margin-left: 10px;
+        }
+        
+        .main-content {
+            margin-top: 40px;
+            display: flex;
+            gap: 30px;
+        }
+        
+        .cake-gallery {
+            flex: 2;
+            background-color: var(--light);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            padding: 30px;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--primary);
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--primary);
+        }
+        
+        .cakes-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+        
+        .cake-card {
+            background-color: var(--light);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        
+        .cake-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .cake-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .cake-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: var(--primary);
+            color: var(--light);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .cake-details {
+            padding: 20px;
+        }
+        
+        .cake-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .cake-description {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .cake-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .cake-price {
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 18px;
+        }
+        
+        .select-btn {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 5px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .select-btn:hover {
+            background-color: var(--primary);
+            color: var(--light);
+        }
+        
+        .cake-card.selected {
+            border: 2px solid var(--primary);
+        }
+        
+        .cake-card.selected .select-btn {
+            background-color: var(--primary);
+            color: var(--light);
+        }
+        
+        .order-form {
+            flex: 1;
+            background-color: var(--light);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            padding: 30px;
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .payment-options {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .payment-option {
+            flex: 1;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+        
+        .payment-option:hover {
+            background-color: var(--secondary);
+        }
+        
+        .payment-option.selected {
+            border-color: var(--primary);
+            background-color: var(--secondary);
+        }
+        
+        .payment-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .order-details {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .order-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .order-row.total {
+            font-weight: bold;
+            font-size: 18px;
+            padding-top: 10px;
+            border-top: 1px dashed #ddd;
+            margin-top: 10px;
+        }
+        
+        .checkout-btn {
+            background-color: var(--primary);
+            color: var(--light);
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        
+        .checkout-btn:hover {
+            background-color: var(--primary-light);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 200;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        
+        .modal.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .modal-content {
+            background-color: var(--light);
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        
+        .modal.show .modal-content {
+            transform: translateY(0);
+        }
+        
+        .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #777;
+        }
+        
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 30px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background-color: var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            color: white;
+            font-size: 40px;
+        }
+        
+        .modal-title {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        
+        .modal-text {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .modal-btn {
+            background-color: var(--primary);
+            color: var(--light);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .modal-btn:hover {
+            background-color: var(--primary-light);
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .order-form {
+                position: static;
+                margin-top: 30px;
+            }
+        }
+    </style>
+</head>
+</head>
+<body>
+    <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="menu2.html"> Menu</a>
+            <a href="bday.html">Cake Booking</a>
+            <a href="book.html">Reservation</a>
+            <a href="feedback.html">Feedback</a>
+        </nav>
+        
+    </nav>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    🎂 <span>Spice Haven</span>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="main-content">
+            <div class="cake-gallery">
+                <h2 class="section-title">Premium Cake Selection</h2>
+                <div class="cakes-container">
+                    <!-- Cake 1 - Replace the div.cake-image with an actual image -->
+                    <div class="cake-card" onclick="selectCake('Classic Chocolate Truffle', 1850, this)">
+                        <div class="cake-image">
+                            <!-- Replace 'images/chocolate-cake.jpg' with your actual image path -->
+                            <img src="Chocolate-Truffle-Cake.jpeg" alt="Chocolate Truffle Cake" style="width: 100%; height: 100%; object-fit: cover;">
+                            <div class="cake-badge">BESTSELLER</div>
+                        </div>
+                        <div class="cake-details">
+                            <div class="cake-name">Classic Chocolate Truffle</div>
+                            <div class="cake-description">Rich chocolate layers with smooth truffle ganache</div>
+                            <div class="cake-meta">
+                                <div class="cake-price">₹1850</div>
+                                <button class="select-btn">Select</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Cake 2 -->
+                    <div class="cake-card" onclick="selectCake('Black Forest Gateau', 1600, this)">
+                        <div class="cake-image">
+                            <!-- Replace 'images/blueberry-cake.jpg' with your actual image path -->
+                            <img src="Black_Forest_gateau.jpeg" alt="Blueberry Cheesecake" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <div class="cake-details">
+                            <div class="cake-name">Black Forest Gateau</div>
+                            <div class="cake-description">Moist chocolate and tart cherries</div>
+                            <div class="cake-meta">
+                                <div class="cake-price">₹1600</div>
+                                <button class="select-btn">Select</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Cake 3 -->
+                    <div class="cake-card" onclick="selectCake('Nutsy Fruitsy La La La', 2800, this)">
+                        <div class="cake-image">
+                            <!-- Replace 'images/pistachio-cake.jpg' with your actual image path -->
+                            <img src="Nutsy Fruitsy La La La.jpeg" alt="Pistachio Dream Cake" style="width: 100%; height: 100%; object-fit: cover;">
+                            <div class="cake-badge">PREMIUM</div>
+                        </div>
+                        <div class="cake-details">
+                            <div class="cake-name">Nutsy Fruitsy La La La</div>
+                            <div class="cake-description">Our most premium cake studded with Nuts and Fillings</div>
+                            <div class="cake-meta">
+                                <div class="cake-price">₹2800</div>
+                                <button class="select-btn">Select</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Cake 4 -->
+                    <div class="cake-card" onclick="selectCake('Red Velvet', 1800, this)">
+                        <div class="cake-image">
+                            <!-- Replace 'images/strawberry-cake.jpg' with your actual image path -->
+                            <img src="red velvet.jpeg" alt="Strawberry Shortcake" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <div class="cake-details">
+                            <div class="cake-name">Red Velvet </div>
+                            <div class="cake-description">Buttermilk and ermine icing</div>
+                            <div class="cake-meta">
+                                <div class="cake-price">₹1800</div>
+                                <button class="select-btn">Select</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Cake 5 -->
+                    <div class="cake-card" onclick="selectCake('Biskvit Cake', 2050, this)">
+                        <div class="cake-image">
+                           
+                            <img src="Biskvit Cake with Easy Cream.jpeg" alt="Butterscotch Delight Cake" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <div class="cake-details">
+                            <div class="cake-name">Biskvit Cake</div>
+                            <div class="cake-description">Vanilla sponge with butterscotch chips and caramel</div>
+                            <div class="cake-meta">
+                                <div class="cake-price">₹2050</div>
+                                <button class="select-btn">Select</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Cake 6 -->
+                    <div class="cake-card" onclick="selectCake('Pistachio Dream', 1250, this)">
+                        <div class="cake-image">
+                            <!-- Replace 'images/mint-cake.jpg' with your actual image path -->
+                            <img src="white.jpeg" alt="Mint Chocolate Chip Cake" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <div class="cake-details">
+                            <div class="cake-name">Pistachio Dream</div>
+                            <div class="cake-description">Delicate pistachio sponge with cream filling</div>
+                            <div class="cake-meta">
+                                <div class="cake-price">₹1250</div>
+                                <button class="select-btn">Select</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="order-form">
+                <h2 class="section-title">Order Details</h2>
+                <form id="cakeForm">
+                    <div class="form-group">
+                        <label class="form-label">Selected Cake</label>
+                        <input type="text" class="form-control" id="selectedCake" readonly placeholder="Select a cake from the gallery">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Your Name</label>
+                        <input type="text" class="form-control" id="customerName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="phoneNumber" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Payment Method</label>
+                        <div class="payment-options">
+                            <div class="payment-option" onclick="selectPayment('pod', this)">
+                                <div class="payment-icon">💵</div>
+                                <div>Pay on Delivery</div>
+                            </div>
+                            <div class="payment-option" onclick="selectPayment('gpay', this)">
+                                <div class="payment-icon">📱</div>
+                                <div>GPay</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="order-details">
+                        <div class="order-row">
+                            <div>Cake Price:</div>
+                            <div id="cakePrice">₹0</div>
+                        </div>
+                        <div class="order-row">
+                            <div>Delivery Fee:</div>
+                            <div>₹50</div>
+                        </div>
+                        <div class="order-row total">
+                            <div>Total:</div>
+                            <div id="totalPrice">₹50</div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="checkout-btn">Place Order</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal" id="orderModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div id="processing">
+                <div class="loading-spinner"></div>
+                <h3 class="modal-title">Processing Your Order</h3>
+                <p class="modal-text">Please wait while we confirm your order details...</p>
+            </div>
+            <div id="success" style="display:none;">
+                <div class="success-icon">✓</div>
+                <h3 class="modal-title">Order On The Way!</h3>
+                <p class="modal-text">Your order has been confirmed and is being prepared for delivery.</p>
+                <button class="modal-btn" onclick="closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let selectedCakePrice = 0;
+        let selectedPaymentMethod = '';
+        
+        function selectCake(name, price, element) {
+            // Update form
+            document.getElementById('selectedCake').value = name;
+            selectedCakePrice = price;
+            document.getElementById('cakePrice').textContent = '₹' + price;
+            document.getElementById('totalPrice').textContent = '₹' + (price + 50);
+            
+            // Update visual selection
+            const cakeCards = document.querySelectorAll('.cake-card');
+            cakeCards.forEach(card => {
+                card.classList.remove('selected');
+                card.querySelector('.select-btn').textContent = 'Select';
+            });
+            
+            element.classList.add('selected');
+            element.querySelector('.select-btn').textContent = 'Selected';
+        }
+        
+        function selectPayment(method, element) {
+            selectedPaymentMethod = method;
+            
+            // Update visual selection
+            const paymentOptions = document.querySelectorAll('.payment-option');
+            paymentOptions.forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            element.classList.add('selected');
+        }
+        
+        document.getElementById('cakeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Basic validation
+            const cake = document.getElementById('selectedCake').value;
+            const name = document.getElementById('customerName').value;
+            const phone = document.getElementById('phoneNumber').value;
+            
+            if (!cake || !name || !phone || selectedPaymentMethod === '') {
+                alert('Please fill out all fields and select a payment method');
+                return;
+            }
+            
+            // Show processing modal
+            const modal = document.getElementById('orderModal');
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                modal.classList.add('show');
+            }, 10);
+            
+            // Simulate processing time then show success
+            setTimeout(() => {
+                document.getElementById('processing').style.display = 'none';
+                document.getElementById('success').style.display = 'block';
+            }, 2000);
+        });
+        
+        function closeModal() {
+            const modal = document.getElementById('orderModal');
+            modal.classList.remove('show');
+            
+            setTimeout(() => {
+                modal.style.display = 'none';
+                document.getElementById('processing').style.display = 'block';
+                document.getElementById('success').style.display = 'none';
+            }, 300);
+        }
+    </script>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* Navigation */
+        nav {
+            background-color: rgba(0, 0, 0, 0.8);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+        }
+        
+        nav a:hover {
+            background-color: #e67e22;
+            transform: translateY(-3px);
+        }
+        
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .hero-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.7);
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.5) 100%);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 100;
+            max-width: 800px;
+            text-align: center;
+            padding: 20px;
+            color: #fff;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            font-weight: 300;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        
+        .hero-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 40px;
+            animation: fadeIn 2s ease-in-out;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background-color: #e67e22;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4);
+            animation: fadeIn 2.5s ease-in-out;
+        }
+        
+        .cta-button:hover {
+            background-color: #d35400;
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(211, 84, 0, 0.6);
+        }
+        
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 15px 0;
+                flex-wrap: wrap;
+            }
+            
+            nav a {
+                padding: 8px 15px;
+                margin: 5px;
+                font-size: 0.9rem;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .hero-text {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</body>
+</html>
