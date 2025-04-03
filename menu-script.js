@@ -177,7 +177,7 @@ document.getElementById('addToReservation').addEventListener('click', () => {
         localStorage.setItem('spiceHavenOrder', JSON.stringify(orderData));
         
         // Redirect to reservation page
-        window.location.href = 'index.html';
+        window.location.href = 'menu2.html';
     } else {
         alert('Please select at least one item to add to your reservation.');
     }
